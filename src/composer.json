@@ -1,0 +1,12 @@
+{
+    "name": "matdiscreta/related-products",
+    "description": "Search of related products using graphs through Neo4j",
+    "type": "project",
+    "require": {
+        "graphaware/neo4j-php-client": "^4.0",
+        "slim/slim": "^3.0"
+    },
+    "autoload":{
+      "RelatedProducts\\": "api/"
+    }
+}
