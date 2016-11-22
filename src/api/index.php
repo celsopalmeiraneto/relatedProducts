@@ -41,9 +41,20 @@ $app->get('/this', function(Request $request, Response $response){
   return $newResponse;
 });
 
-$app->get('/Product', function(Request $request, Response $response){
-  $pdal = new ProductDAL($this->mysql);
+$app->get('/Product', function( Request $request, Response $response){
+  $pdal = new ProductDAL($this->mysql, $this->neo4j);
   $newResponse = $response->withJson($pdal->listAllProducts());
+  return $newResponse;
+});
+
+$app->get('/SearchRelated/{productId}/{technology}', function(Request $request, Response $response, $args){
+  $pdal = new ProductDAL($this->mysql, $this->neo4j);
+
+  if($args['technology']=='neo')
+    $newResponse = $response->withJson($pdal->searchRelatedProductsNeo4j($args['productId']));
+  else
+    $newResponse = $response->withJson($pdal->searchRelatedProductsMySQL($args['productId']));
+
   return $newResponse;
 });
 
