@@ -27,24 +27,28 @@ class ProductDAL
   }
 
   public function searchRelatedProductsMySQL($mainProduct){
-    $res   = $this->mysqlConnection->query("select s2.d_product_productid as productId, count(*) as ocorrencias
+
+    $query = "select s2.d_product_productid as productId, count(*) as ocorrencias
               from f_sale s1
               inner join f_sale s2 on s2.externalid = s1.externalid
               where s1.d_product_productid =  '$mainProduct'
                 and s2.d_product_productid <> '$mainProduct'
               group by s2.d_product_productid
               having ocorrencias > 5
-              order by ocorrencias desc");
+              order by ocorrencias desc";
+
+    $time_start = microtime(true);
+    $res   = $this->mysqlConnection->query($query);
+    $time_end = microtime(true);
+
     $table = [];
     if($res){
       while ($row = $res->fetch_assoc()) {
-        $row['name'] = mb_convert_encoding($row['name'], 'ASCII');
         $product = new Product($row['productId'], '');
         $table[] = $product;
       }
     }
-    return $table;
-
+    return ['query' => $query, 'res' => $table, 'time' => $time_end-$time_start];
   }
   public function searchRelatedProductsNeo4j($mainProduct){
     $query = "match (sa:Sale)-[r:CONTAINS]->(prod:Product{productId:'$mainProduct'})
@@ -53,7 +57,9 @@ class ProductDAL
               where ocorrencias > 5 and relacionados.productId <> '$mainProduct'
               return relacionados, ocorrencias order by ocorrencias desc";
 
-    $res = $this->neo4jConnection->run($query);
+    $time_start = microtime(true);
+    $res        = $this->neo4jConnection->run($query);
+    $time_end   = microtime(true);
 
     $buildTable = function($item){
       $internalArray = $item->values();
@@ -62,7 +68,9 @@ class ProductDAL
               'occurrences' => $internalArray[1]];
     };
 
-    return ['query' => $query, 'res' => array_map($buildTable, $res->getRecords())];
+    return ['query' => $query,
+            'res'   => array_map($buildTable, $res->getRecords()),
+            'time'  => $time_end-$time_start];
   }
 
 

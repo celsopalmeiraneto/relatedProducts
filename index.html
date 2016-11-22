@@ -32,26 +32,16 @@
     <div class="row">
       <div class="col-md-12">
         <h3>Procure por um produto:</h3>
-        <form class="form">
+        <div class="form">
           <div class="form-group">
             <input id="product" class="form-control" type="text" name="productName" placeholder="Ex.: Luva">
           </div>
-        </form>
+        </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-8">
-        <h4 id="productName">Produto XYZ</h4>
-        <p><strong>Código:</strong><span id="productId">123456</span></p>
-      </div>
-      <div class="col-md-4">
-        <h5>Produtos Relacionados</h5>
-        <table class="table table-striped">
-          <tbody>
-            <tr><td>Prod 1</td></tr>
-            <tr><td>Prod 2</td></tr>
-          </tbody>
-        </table>
+      <div class="col-md-12">
+        <h4>Produto:<span id="productName"></span></h4>
       </div>
     </div>
     <div id="details">
@@ -59,18 +49,44 @@
         <div class="col-md-6">
           <h4>Neo4j</h4>
           <h5>Consulta Executada</h5>
-          <textarea id="query" rows="8" cols="40" class="form-control"></textarea>
-          <p>Tempo Total:<span id="totalTime">1.3s</span></p>
+          <textarea id="query_neo" rows="8" cols="40" class="form-control"></textarea>
+          <div id="progress_neo" class="progress" style="display:none">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            </div>
+          </div>
+          <p>Tempo Total:<span id="totalTime_neo"></span> s</p>
         </div>
         <div class="col-md-6">
           <h4>MySQL</h4>
           <h5>Consulta Executada</h5>
-          <textarea id="query" rows="8" cols="40" class="form-control"></textarea>
-          <p>Tempo Total:<span id="totalTime">1.3s</span></p>
+          <textarea id="query_mysql" rows="8" cols="40" class="form-control"></textarea>
+          <div id="progress_mysql" class="progress" style="display:none">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            </div>
+          </div>
+          <p>Tempo Total:<span id="totalTime_mysql"></span> s</p>
         </div>
       </div>
     </div>
-
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Itens relacionados</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                Nome
+              </th>
+              <th>
+                Ocorrências
+              </th>
+            </tr>
+          </thead>
+          <tbody id="relatedProducts">
+          </tbody>
+        </table>
+      </div>
+    </div>
     <hr>
     <footer>
       <p>FAESA, Matemática Discreta</p>
