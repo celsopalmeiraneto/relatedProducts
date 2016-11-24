@@ -22,6 +22,8 @@ $(document).ready(function(){
     $("#productName").text(evtData.label);
     $("#query_neo").text("");
     $("#query_mysql").text("");
+    $("#totalTime_neo").text(" ");
+    $("#totalTime_mysql").text(" ");
     $("#progress_neo").show();
     $("#progress_mysql").show();
   };
